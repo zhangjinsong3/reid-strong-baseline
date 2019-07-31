@@ -9,6 +9,7 @@ from .market1501 import Market1501
 from .msmt17 import MSMT17
 from .veri import VeRi
 from .mvb import MVB
+from .boxes import Boxes
 from .dataset_loader import ImageDataset
 
 __factory = {
@@ -18,6 +19,7 @@ __factory = {
     'msmt17': MSMT17,
     'veri': VeRi,
     'mvb': MVB,
+    'boxes': Boxes,
 }
 
 
