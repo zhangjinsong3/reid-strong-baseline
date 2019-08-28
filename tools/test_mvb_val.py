@@ -38,7 +38,7 @@ def main():
         cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
     cfg.DATASETS.NAMES = 'mvb'
-    cfg.DATASETS.ROOT_DIR = './data'
+    cfg.DATASETS.ROOT_DIR = '/home/zjs/projects/Opensource_datasets/Boxes/MVB_val'
     cfg.DATALOADER.NUM_WORKERS = 0
     cfg.freeze()
 
@@ -64,6 +64,7 @@ def main():
     # init dataloader
     gallery_loader, query_loader, num_query, num_classes = make_test_data_loader(
         cfg)
+    print('num query: %d, num_classes: %d' % (num_query, num_classes))
     # build model and load checkpoint param
     model = build_model(cfg, num_classes)
     model.load_param(cfg.TEST.WEIGHT)
@@ -92,7 +93,7 @@ def main():
             g_names.extend(paths)
 
     # ===== init vars =====
-    feats = torch.cat(feats, dim=0) # cat feats because feats is batch-wised
+    feats = torch.cat(feats, dim=0)  # cat feats because feats is batch-wised
     feats = torch.nn.functional.normalize(feats, dim=1, p=2) # normalize feats
     qf = feats[:num_query]          # query feats
     gf = feats[num_query:]          # gallery feats
@@ -129,7 +130,7 @@ def main():
     distmat_id_wised = distmat_id_wised[orders]
 
     # ===== write result to csv =====
-    with open('../024_bag_result.csv', 'w') as f:
+    with open(os.path.join(output_dir, '024_bag_result_v1.csv'), 'w') as f:
         for q_idx in range(num_q):
             order = np.argsort(distmat_id_wised[q_idx])
             max_dist = distmat_id_wised[q_idx].max()

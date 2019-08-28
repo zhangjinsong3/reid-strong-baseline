@@ -21,7 +21,6 @@ import torch
 from torch.backends import cudnn
 
 
-
 def train(cfg):
     # prepare dataset
     train_loader, val_loader, num_query, num_classes = make_data_loader(cfg)
@@ -110,6 +109,9 @@ def train(cfg):
             scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.STEPS, cfg.SOLVER.GAMMA, cfg.SOLVER.WARMUP_FACTOR,
                                           cfg.SOLVER.WARMUP_ITERS, cfg.SOLVER.WARMUP_METHOD)
         else:
+            start_epoch = 0
+            scheduler = WarmupMultiStepLR(optimizer, cfg.SOLVER.STEPS, cfg.SOLVER.GAMMA, cfg.SOLVER.WARMUP_FACTOR,
+                                          cfg.SOLVER.WARMUP_ITERS, cfg.SOLVER.WARMUP_METHOD)
             print('Only support pretrain_choice for imagenet and self, but got {}'.format(
                 cfg.MODEL.PRETRAIN_CHOICE))
 

@@ -19,6 +19,7 @@ def val_collate_fn(batch):
     imgs, pids, camids, _ = zip(*batch)
     return torch.stack(imgs, dim=0), pids, camids
 
+
 def test_collate_fn(batch):
     imgs, pids, camids, paths = zip(*batch)
     basenames = [os.path.basename(path) for path in paths]

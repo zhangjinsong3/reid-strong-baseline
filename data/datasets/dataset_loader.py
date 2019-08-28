@@ -38,7 +38,10 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, index):
         if self.no_id:
-            img_path = self.dataset[index]
+            if isinstance(self.dataset[index], list):
+                img_path, _, _ = self.dataset[index]
+            else:
+                img_path = self.dataset[index]
             pid, camid = -1, -1
         else:
             img_path, pid, camid = self.dataset[index]

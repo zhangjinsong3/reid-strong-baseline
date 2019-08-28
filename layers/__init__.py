@@ -8,6 +8,7 @@ import torch.nn.functional as F
 
 from .triplet_loss import TripletLoss, CrossEntropyLabelSmooth
 from .center_loss import CenterLoss
+from .focal_loss import FocalLoss
 
 
 def make_loss(cfg, num_classes):    # modified by gu
@@ -64,6 +65,11 @@ def make_loss_with_center(cfg, num_classes):    # modified by gu
     if cfg.MODEL.IF_LABELSMOOTH == 'on':
         xent = CrossEntropyLabelSmooth(num_classes=num_classes)     # new add by luo
         print("label smooth on, numclasses:", num_classes)
+
+    if cfg.MODEL.IF_FOCALLOSS == 'yes':
+        # TODO: make the code more flexible!
+        xent = FocalLoss(gamma=2)
+        print('Use focal loss!!!!!')
 
     def loss_func(score, feat, target):
         if cfg.MODEL.METRIC_LOSS_TYPE == 'center':

@@ -142,14 +142,17 @@ class ResNet_IBN(nn.Module):
 
     def load_param(self, model_path):
         param_dict = torch.load(model_path)
-        for i in param_dict['state_dict']:
+        # For pre-trained model state_dict save in an dict
+        param_dict = param_dict['state_dict'] if param_dict.get('state_dict') is not None else param_dict
+        for i in param_dict:
             if 'fc' in i:
                 continue
             j = None
+            # State_dict key of pre-trained model trained with multi-gpu contains 'module' prefix!
             if 'module' in i:
                 j = i.replace('module.', '')
-            self.state_dict()[i if j is None else j].copy_(param_dict['state_dict'][i])
-            print('state_dict <%s> copied success!' % i)
+            self.state_dict()[i if j is None else j].copy_(param_dict[i])
+            # print('state_dict <%s> copied success!' % i)
 
 
 def resnet50_ibn_a(last_stride, pretrained=False, **kwargs):

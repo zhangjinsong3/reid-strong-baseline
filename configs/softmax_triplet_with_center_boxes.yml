@@ -1,0 +1,69 @@
+MODEL:
+  NAME: 'resnext101_ibn_a'
+  PRETRAIN_CHOICE: 'imagenet'
+  PRETRAIN_PATH: '/home/zjs/.torch/models/resnext101_ibn_a.pth'
+  METRIC_LOSS_TYPE: 'triplet_center'
+  IF_FOCALLOSS: 'yes'
+  IF_LABELSMOOTH: 'on'
+  IF_WITH_CENTER: 'yes'
+  DEVICE_ID: ('3,4,5')
+
+
+
+
+INPUT:
+  SIZE_TRAIN: [384, 384]
+  SIZE_TEST: [384, 384]
+  PROB: 0.5 # random horizontal flip
+  RE_PROB: 0.6 # random erasing
+  PADDING: 0
+
+DATASETS:
+  NAMES: ('boxes')
+  ROOT_DIR: ('/home/zjs/projects/Opensource_datasets')
+
+DATALOADER:
+  SAMPLER: 'softmax_triplet'
+  NUM_INSTANCE: 4
+  NUM_WORKERS: 8
+
+SOLVER:
+  OPTIMIZER_NAME: 'Adam'
+  MAX_EPOCHS: 300
+  BASE_LR: 0.00035
+
+  CLUSTER_MARGIN: 0.3
+
+  CENTER_LR: 0.5
+  CENTER_LOSS_WEIGHT: 0.0005
+
+  RANGE_K: 2
+  RANGE_MARGIN: 0.3
+  RANGE_ALPHA: 0
+  RANGE_BETA: 1
+  RANGE_LOSS_WEIGHT: 1
+
+  BIAS_LR_FACTOR: 1
+  WEIGHT_DECAY: 0.0005
+  WEIGHT_DECAY_BIAS: 0.0005
+  IMS_PER_BATCH: 64
+
+  STEPS: [100, 180, 260]
+  GAMMA: 0.1
+
+  WARMUP_FACTOR: 0.01
+  WARMUP_ITERS: 10
+  WARMUP_METHOD: 'linear'
+
+  CHECKPOINT_PERIOD: 10
+  LOG_PERIOD: 60
+  EVAL_PERIOD: 10
+
+TEST:
+  IMS_PER_BATCH: 16
+  RE_RANKING: 'no'
+  WEIGHT: "/home/zjs/projects/Reid/stronger-reid/Experiment-Boxes--resnext101_ibn_a_32_4d-all-tricks-tri_center-384x384-bs16x4-warmup10-erase0_5-labelsmooth_on-laststride1-bnneck_on-triplet_centerloss0_0005_focal-loss/resnext101_ibn_a_model_60.pth"
+  NECK_FEAT: 'after'
+  FEAT_NORM: 'yes'
+
+OUTPUT_DIR: "/home/zjs/projects/Reid/stronger-reid/Experiment-Boxes--resnext101_ibn_a_32_4d-all-tricks-tri_center-384x384-bs16x4-warmup10-erase0_5-labelsmooth_on-laststride1-bnneck_on-triplet_centerloss0_0005_focal-loss_from_scratch"

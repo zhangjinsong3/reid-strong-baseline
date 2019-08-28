@@ -46,6 +46,7 @@ def make_data_loader(cfg):
     )
     return train_loader, val_loader, len(dataset.query), num_classes
 
+
 def make_test_data_loader(cfg):
     val_transforms = build_transforms(cfg, is_train=False)
     num_workers = cfg.DATALOADER.NUM_WORKERS

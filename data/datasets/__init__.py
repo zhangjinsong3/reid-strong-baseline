@@ -10,6 +10,7 @@ from .msmt17 import MSMT17
 from .veri import VeRi
 from .mvb import MVB
 from .boxes import Boxes
+from .packages import Packages
 from .dataset_loader import ImageDataset
 
 __factory = {
@@ -20,6 +21,7 @@ __factory = {
     'veri': VeRi,
     'mvb': MVB,
     'boxes': Boxes,
+    'packages': Packages
 }
 
 

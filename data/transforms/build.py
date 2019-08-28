@@ -7,7 +7,7 @@
 import torchvision.transforms as T
 from PIL import Image
 
-from .transforms import RandomErasing
+from .transforms import RandomErasing, ResizeKeepRatio, RandomCenterErasing
 
 
 class PadShortSide(object):
@@ -31,9 +31,12 @@ def build_transforms(cfg, is_train=True):
             T.RandomAffine(
                 degrees=5, translate=(0.1, 0.1), scale=(0.9, 1.1), fillcolor=(124, 116, 104)),
             T.Resize(cfg.INPUT.SIZE_TRAIN),
+            # ResizeKeepRatio(cfg.INPUT.SIZE_TRAIN, fillcolor=(124, 116, 104)),
             T.RandomHorizontalFlip(p=cfg.INPUT.PROB),
             T.ToTensor(),
             normalize_transform,
+            # RandomCenterErasing(probability=cfg.INPUT.RE_PROB,
+            #                     mean=cfg.INPUT.PIXEL_MEAN)
             RandomErasing(probability=cfg.INPUT.RE_PROB,
                           mean=cfg.INPUT.PIXEL_MEAN)
         ])
@@ -41,6 +44,7 @@ def build_transforms(cfg, is_train=True):
         transform = T.Compose([
             PadShortSide(),
             T.Resize(cfg.INPUT.SIZE_TEST),
+            # ResizeKeepRatio(cfg.INPUT.SIZE_TEST, fillcolor=(124, 116, 104)),
             T.ToTensor(),
             normalize_transform
         ])

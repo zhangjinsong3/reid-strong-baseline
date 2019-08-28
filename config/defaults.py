@@ -43,6 +43,9 @@ _C.MODEL.METRIC_LOSS_TYPE = 'triplet'
 # If train with label smooth, options: 'on', 'off'
 _C.MODEL.IF_LABELSMOOTH = 'on'
 
+# If train with focal loss instead of cross entropy loss, options: 'yes', 'no'
+_C.MODEL.IF_FOCALLOSS = 'no'
+
 
 # -----------------------------------------------------------------------------
 # INPUT
